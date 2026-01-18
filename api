@@ -1,0 +1,18 @@
+let messages = []; 
+
+export default function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'POST') {
+        const { user, text } = req.body;
+        const newMessage = { user, text, time: Date.now() };
+        messages.push(newMessage);
+        if (messages.length > 20) messages.shift(); 
+        return res.status(200).json({ status: "ok" });
+    } 
+
+    return res.status(200).json(messages);
+}
+
